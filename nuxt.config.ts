@@ -8,5 +8,10 @@ export default defineNuxtConfig({
     '@nuxt/hints',
     '@nuxt/image',
     '@nuxt/ui'
-  ]
+  ],
+  eslint: {
+    config: {
+      standalone: false // Интеграция с существующим проектом
+    }
+  }
 })
