@@ -13,9 +13,12 @@
     "@nuxt/hints": "1.0.0-alpha.3",
     "@nuxt/image": "2.0.0",
     "@nuxt/ui": "4.2.1",
+    "@prisma/adapter-pg": "^7.1.0",
+    "@prisma/client": "^7.1.0",
     "@trpc/client": "^11.7.2",
     "@trpc/server": "^11.7.2",
     "nuxt": "^4.2.1",
+    "pg": "^8.16.3",
     "trpc-nuxt": "^1.2.0",
     "typescript": "^5.9.3",
     "vue": "^3.5.25",
@@ -24,6 +27,7 @@
   },
   "packageManager": "pnpm@10.17.1+sha512.17c560fca4867ae9473a3899ad84a88334914f379be46d455cbf92e5cf4b39d34985d452d2583baf19967fa76cb5c17bc9e245529d0b98745721aa7200ecaf7a",
   "devDependencies": {
+    "@types/pg": "^8.16.0",
     "@typescript-eslint/eslint-plugin": "^8.49.0",
     "@typescript-eslint/parser": "^8.49.0",
     "eslint": "^9.39.1",
@@ -31,6 +35,7 @@
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-vue": "^10.6.2",
     "prettier-eslint": "^16.4.2",
+    "prisma": "^7.1.0",
     "vue-eslint-parser": "^10.2.0"
   }
 }

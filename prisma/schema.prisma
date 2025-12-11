@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../server/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+  MANAGER
+}
+
+// Статусы сбора
+enum CampaignStatus {
+  ACTIVE
+  PAUSED
+  FINISHED
+}
+
+model User {
+  id        String   @id @default(cuid()) 
+  email     String   @unique
+  password  String   // Хеш пароля
+  name      String?
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  
+  // Связи
+  donations Donation[]
+}
+
+model Campaign {
+  id            String         @id @default(cuid())
+  slug          String         @unique // Для красивых URL (friendly-url)
+  title         String
+  description   String         @db.Text
+  targetAmount  Int            // Целевая сумма в копейках (избегаем float!)
+  currentAmount Int            @default(0) // Собранная сумма в копейках
+  status        CampaignStatus @default(ACTIVE)
+  
+  // Контент
+  imageUrl      String?        // Ссылка на картинку в MinIO
+  
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  // Связи
+  donations     Donation[]
+}
+
+model Donation {
+  id        String   @id @default(cuid()) 
+  amount    Int      // Сумма в копейках
+  paymentId String?  // ID платежа от ЮKassa (для сверки)
+  status    String   @default("PENDING") // PENDING, SUCCEEDED, CANCELED
+  
+  userId    String?     // Может быть null (анонимное пожертвование)
+  user      User?    @relation(fields: [userId], references: [id])
+  
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id])
+
+  createdAt DateTime @default(now())
+}
