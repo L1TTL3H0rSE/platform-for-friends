@@ -7,7 +7,7 @@ const { $trpc } = useNuxtApp();
 const postsQuery = $trpc.post.getPosts.useQuery();
 
 // 2. Выполняем MUTATION-запрос для изменения данных
-const newPostTitle = ref('');
+const newPostTitle = ref("");
 const addPostMutation = $trpc.post.addPost.useMutation();
 
 const addPost = async () => {
@@ -15,14 +15,13 @@ const addPost = async () => {
 
   try {
     await addPostMutation.mutate({ title: newPostTitle.value });
-    newPostTitle.value = '';
+    newPostTitle.value = "";
     await postsQuery.refresh();
   } catch (e) {
     console.error(e);
   }
 };
 </script>
-
 
 <template>
   <div>
@@ -31,22 +30,32 @@ const addPost = async () => {
     <h2>Текущие сборы:</h2>
     <div v-if="postsQuery.pending.value">Загрузка...</div>
     <ul v-else-if="postsQuery.data.value">
-      <li v-for="post in postsQuery.data.value" :key="post.id">
+      <li
+        v-for="post in postsQuery.data.value"
+        :key="post.id"
+      >
         {{ post.title }}
       </li>
     </ul>
 
-    <hr>
+    <hr />
 
     <h2>Добавить новый сбор:</h2>
-     <form @submit.prevent="addPost">
-    <input v-model="newPostTitle" type="text" placeholder="Название сбора" >
-    <button type="submit" :disabled="addPostMutation.pending.value">
-      {{ addPostMutation.pending.value ? 'Добавляем...' : 'Добавить' }}
-    </button>
-    <div v-if="addPostMutation.error.value">
-      Ошибка: {{ addPostMutation.error.value.message }}
-    </div>
-  </form>
+    <form @submit.prevent="addPost">
+      <input
+        v-model="newPostTitle"
+        placeholder="Название сбора"
+        type="text"
+      />
+      <button
+        :disabled="addPostMutation.pending.value"
+        type="submit"
+      >
+        {{ addPostMutation.pending.value ? "Добавляем..." : "Добавить" }}
+      </button>
+      <div v-if="addPostMutation.error.value">
+        Ошибка: {{ addPostMutation.error.value.message }}
+      </div>
+    </form>
   </div>
 </template>
